@@ -1,0 +1,43 @@
+name: CI/CD Pipeline for Azure Deployment
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.302'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the application
+        run: dotnet build --configuration Release
+
+      - name: Publish the application
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create Azure App Service
+        run: |
+          az group create --name "PizzaStoreResource" --location "brazilsouth"
+          az appservice plan create --name "PizzaStoreServicePlan" --resource-group "PizzaStoreResource" --sku F1
+          az webapp create --resource-group "PizzaStoreResource" --plan "PizzaStoreServicePlan" --name "PizzaStore-WebApp" --runtime "dotnet:8" --deployment-local-git
+
+      - name: Deploy to Azure Web App
+        run: |
+          az webapp deploy --resource-group "PizzaStoreResource" --name "PizzaStore-WebApp" --src-path ./publish
