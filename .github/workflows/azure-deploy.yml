@@ -27,17 +27,9 @@ jobs:
       - name: Publish the application
         run: dotnet publish PizzaStore.csproj -c Release -o ./publish
 
-      - name: Azure Login
-        uses: azure/login@v1
+      - name: Deploy to Azure Web App using Publish Profile
+        uses: azure/webapps-deploy@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Create Azure App Service
-        run: |
-          az group create --name "PizzaStoreResource" --location "brazilsouth"
-          az appservice plan create --name "PizzaStoreServicePlan" --resource-group "PizzaStoreResource" --sku F1
-          az webapp create --resource-group "PizzaStoreResource" --plan "PizzaStoreServicePlan" --name "PizzaStore-WebApp" --runtime "dotnet:8" --deployment-local-git
-
-      - name: Deploy to Azure Web App
-        run: |
-          az webapp deploy --resource-group "PizzaStoreResource" --name "PizzaStore-WebApp" --src-path ./publish
+          app-name: "PizzaStore-WebApp"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
