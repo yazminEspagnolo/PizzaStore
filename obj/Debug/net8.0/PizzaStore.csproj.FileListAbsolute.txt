@@ -30,3 +30,4 @@ C:\Users\Yazmin Espagnolo\Desktop\PizzaStore\obj\Debug\net8.0\refint\PizzaStore.
 C:\Users\Yazmin Espagnolo\Desktop\PizzaStore\obj\Debug\net8.0\PizzaStore.pdb
 C:\Users\Yazmin Espagnolo\Desktop\PizzaStore\obj\Debug\net8.0\PizzaStore.genruntimeconfig.cache
 C:\Users\Yazmin Espagnolo\Desktop\PizzaStore\obj\Debug\net8.0\ref\PizzaStore.dll
+C:\Users\Yazmin Espagnolo\Desktop\PizzaStore\obj\Debug\net8.0\PizzaStore.sourcelink.json

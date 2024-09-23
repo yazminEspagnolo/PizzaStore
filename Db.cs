@@ -55,7 +55,7 @@ public class PizzaDB
     public static void RemovePizza(int id)
     {
         _pizzas = _pizzas.FindAll(pizza => pizza.Id != id).ToList();
-    }
+    }  
 
     
 }
